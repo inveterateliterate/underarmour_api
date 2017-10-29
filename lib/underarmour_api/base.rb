@@ -1,14 +1,17 @@
 module UnderArmourApi
   # API wrapper
   class Base
-    attr_reader :client_id, :authorization, :endpoint, :data
+    attr_reader :client_id, :endpoint, :data
 
     def initialize(client, options={})
       @client_id = client.config.client_id
-      @endpoint = options[:endpoint]
-      @data = options[:data]
+      # @endpoint = options[:endpoint]
+      # @data = options[:data]
       # @token = options[:token] || Authorization.new(authorization_type).access_token
       # after_init
+    end
+
+    class << self
     end
 
     def request(method)
@@ -40,9 +43,9 @@ module UnderArmourApi
       'https://api.ua.com/v7.1/'
     end
 
-    # def endpoint
-    #   raise 'endpoint required by subclasses'
-    # end
+    def endpoint
+      raise 'endpoint required by subclasses'
+    end
 
     def payload
       {
@@ -51,9 +54,9 @@ module UnderArmourApi
       }
     end
 
-    # def data
-    #   {}
-    # end
+    def data
+      {}
+    end
 
     def headers
       {

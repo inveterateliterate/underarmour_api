@@ -1,5 +1,7 @@
+require 'underarmour_api/base'
+
 module UnderArmourApi
-  class Authorization
+  class Authorization < Base
     attr_reader :client_id, :client_secret, :grant_type
 
     module GrantTypes
@@ -13,11 +15,11 @@ module UnderArmourApi
       @grant_type = grant_type
     end
 
-    # def authorize
-    #   response = request(:post)
-    #   access_token = response.parsed_response['access_token']
-    #   access_token
-    # end
+    def authorize
+      response = request(:post)
+      access_token = response.parsed_response['access_token']
+      access_token
+    end
 
     def endpoint
       'oauth2/uacf/access_token/'

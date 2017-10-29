@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.homepage              = 'https://github.com/inveterateliterate/underarmour_api'
   s.license               = 'MIT'
   s.name                  = 'undermour_api'
-  s.require_paths         = 'lib'
+  s.require_paths         = ['lib']
   s.required_ruby_version = '>= 2.0.0'
   s.summary               = 'Ruby wrapper for UnderArmour API'
   s.version               = UnderArmourApi::VERSION
