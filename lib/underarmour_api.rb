@@ -1,6 +1,10 @@
 require 'httparty'
 require 'json'
+require 'pry'
 
+require 'underarmour_api/authorization'
+require 'underarmour_api/base'
+require 'underarmour_api/client'
 require 'underarmour_api/config'
 require 'underarmour_api/error'
 require 'underarmour_api/version'

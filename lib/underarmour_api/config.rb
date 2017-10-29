@@ -9,7 +9,7 @@ module UnderArmourApi
       # error if no hash,
       return unless client_keys.is_a? Hash
       # error if hash keys named incorrectly
-      return unless valid_key_names client_keys.keys
+      return unless valid_key_names? client_keys.keys
 
       client_keys.each do |key, value|
         self.send("#{key}=", value)

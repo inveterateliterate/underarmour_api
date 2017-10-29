@@ -1,9 +1,12 @@
 # require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new(spec)
-
+RSpec::Core::RakeTask.new(:spec)
 task test: :spec
+
+task :console do
+  exec 'irb -r underarmour_api -I ./lib'
+end
 
 task default: :spec
 
