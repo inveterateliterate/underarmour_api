@@ -1,0 +1,21 @@
+## MAC OS
+.DS_Store
+
+## PROJECT
+coverage
+doc
+pkg
+tmp
+.yardoc
+/_yardoc/
+features/support/underarmour_credentials.yml
+
+## TESTS
+.rspec_status
+/spec/reports/
+
+## RUBY GEMS
+.bundle
+Gemfile.lock
+underarmour_api-*.gem
+
