@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Underarmour do
   it 'has a version number' do
-    expect(UnderArmourApi::VERSION).not_to be nil
+    expect(UnderarmourApi::VERSION).not_to be nil
   end
 
   it 'does something useful' do

@@ -25,11 +25,11 @@ Gem::Specification.new do |s|
   s.files                 = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   s.homepage              = 'https://github.com/inveterateliterate/underarmour_api'
   s.license               = 'MIT'
-  s.name                  = 'undermour_api'
+  s.name                  = 'underarmour_api'
   s.require_paths         = ['lib']
   s.required_ruby_version = '>= 2.0.0'
   s.summary               = 'Ruby wrapper for UnderArmour API'
-  s.version               = UnderArmourApi::VERSION
+  s.version               = UnderarmourApi::VERSION
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.

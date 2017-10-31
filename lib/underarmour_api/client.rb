@@ -1,4 +1,4 @@
-module UnderArmourApi
+module UnderarmourApi
   class Client
     attr_reader :config
 
@@ -19,7 +19,7 @@ module UnderArmourApi
       end
     end
 
-    def connect
+    def connect(access_token)
       # authorize
     end
   end

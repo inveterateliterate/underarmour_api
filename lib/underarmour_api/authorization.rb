@@ -1,8 +1,6 @@
-require 'underarmour_api/base'
-
-module UnderArmourApi
+module UnderarmourApi
   class Authorization < Base
-    attr_reader :client_id, :client_secret, :grant_type
+    attr_reader :client_id, :client_secret, :grant_type, :token
 
     module GrantTypes
       CLIENT_CREDENTIALS= 'client_credentials'
@@ -15,7 +13,7 @@ module UnderArmourApi
       @grant_type = grant_type
     end
 
-    def authorize
+    def fetch_access_token
       response = request(:post)
       access_token = response.parsed_response['access_token']
       access_token

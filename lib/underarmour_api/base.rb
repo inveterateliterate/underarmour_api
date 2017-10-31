@@ -1,13 +1,14 @@
-module UnderArmourApi
+module UnderarmourApi
   # API wrapper
   class Base
-    attr_reader :client_id, :endpoint, :data
+    attr_reader :client_id, :options, :token, :query
 
-    def initialize(client, options={})
+    def initialize(client, token=nil, options={})
       @client_id = client.config.client_id
-      # @endpoint = options[:endpoint]
-      # @data = options[:data]
-      # @token = options[:token] || Authorization.new(authorization_type).access_token
+      @token = token || Authorization.new(client).fetch_access_token
+    # access token needed to authorize a user
+      @options = options
+      # @token = options[:token] || Authorization.new(client).fetch_access_token
       # after_init
     end
 
@@ -17,21 +18,6 @@ module UnderArmourApi
     def request(method)
       HTTParty.send(method, url, payload)
     end
-
-    def authorize
-      response = request(:post)
-      access_token = response.parsed_response['access_token']
-      access_token
-    end
-
-    #  can combine get and post with send(:request_method)
-    # def get
-    #   HTTParty.get(url, payload)
-    # end
-
-    # def post
-    #   HTTParty.post(url, payload)
-    # end
 
     private
 
@@ -61,11 +47,18 @@ module UnderArmourApi
     def headers
       {
         'content-type' => 'application/x-www-form-urlencoded',
-        'api-key' => @client_id,
+        'api-key' => client_id,
         'accept' => 'application/json',
-        'user-agent' => "UnderArmourApi/#{UnderArmourApi::VERSION}"
+        'authorization' => "Bearer #{token}",
       }
-      # bearer token
+    end
+
+    # def query
+    #   {}
+    # end
+
+    def parse_response(response)
+      JSON.parse(response.body)
     end
 
     # def after_init(args)

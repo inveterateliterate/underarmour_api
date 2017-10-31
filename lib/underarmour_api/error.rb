@@ -1,4 +1,4 @@
-module UnderArmourApi
+module UnderarmourApi
   module Error
 
     class Base < StandardError

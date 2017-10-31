@@ -9,7 +9,7 @@ Includes the authorization flow, as well as simple methods to query and retrieve
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'underarmour'
+gem 'underarmour_api'
 ```
 
 And then execute:
@@ -18,7 +18,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install underarmour
+    $ gem install underarmour_api
 
 ## Usage
 

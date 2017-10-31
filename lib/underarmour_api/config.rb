@@ -1,10 +1,10 @@
-module UnderArmourApi
-  # `UnderArmourApi::Config` manages the configuration options for the UnderArmour API wrapper. This is a good place to refer to your client ID and client secret. These should be referenced from your secret file as environment variables, such as ENV['UA_API_KEY'].
+module UnderarmourApi
+  # `UnderarmourApi::Config` manages the configuration options for the UnderArmour API wrapper. This is a good place to refer to your client ID and client secret. These should be referenced from your secret file as environment variables, such as ENV['UA_API_KEY'].
   class Config
     CLIENT_KEYS = [:client_id, :client_secret]
     attr_accessor *CLIENT_KEYS
 
-    # Creates a new instance of 'UnderArmourApi::Config'
+    # Creates a new instance of 'UnderarmourApi::Config'
     def initialize(client_keys={})
       # error if no hash,
       return unless client_keys.is_a? Hash
