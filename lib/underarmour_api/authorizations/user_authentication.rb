@@ -13,7 +13,7 @@ module UnderarmourApi
     end
 
     def auth_url
-      "https://api.ua.com/v7.1/oauth2/uacf/authorize/?client_id=#{ua_key}&response_type=code&redirect_uri=http://lvh.me:3000/oauth2/callback"
+      # "https://api.ua.com/v7.1/oauth2/uacf/authorize/?client_id=#{ua_key}&response_type=code&redirect_uri=http://lvh.me:3000/oauth2/callback"
     end
 
     def endpoint
@@ -26,11 +26,17 @@ module UnderarmourApi
 
     def redirect_uri
       "http://#{host_url}/oauth2/callback"
-      'http://lvh.me:3000/callback'
+      # 'http://lvh.me:3000/callback'
     end
 
     def url_to_post_to
       "https://www.mapmyfitness.com/auth/authorize_login/?next=/oauth2/custom_oauth2_redirect/%3Fclient_id%3Dbbpgutg9sj257hkej4skwz3pyvzjv53q%26next%3Dhttp%253A%252F%252Flvh.me%253A3000%252Fcallback"
+    end
+
+    def after_init(args)
+      @code = args[:code]
+      data.merge(code: code)
+      # raise 'code required' if code.nil?
     end
   end
 end

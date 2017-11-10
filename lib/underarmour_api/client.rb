@@ -7,20 +7,14 @@ module UnderarmourApi
       configure(args)
     end
 
-    # grab configuration keys
-    # modeled after Yelp API gem
-    def configure(args)
+    def configure(args={})
       @config = args.nil? ? yield(Config.new) : Config.new(args)
-      if config.nil? || !config.valid_key_names?(args.keys)
+      if config.nil? || !config.valid_key_names?(args.keys) # can pass in no access token to get base token
         @config = nil
         raise Error::InvalidAPIKeys
       else
         config.freeze
       end
-    end
-
-    def connect(access_token)
-      # authorize
     end
   end
 end

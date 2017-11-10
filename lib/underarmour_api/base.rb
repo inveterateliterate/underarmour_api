@@ -1,68 +1,47 @@
 module UnderarmourApi
-  # API wrapper
   class Base
-    attr_reader :client_id, :options, :token, :query
+    # wrappers for resources
+    attr_reader :client_id, :options, :token, :query, :user_num
 
     def initialize(client, token=nil, options={})
       @client_id = client.config.client_id
-      @token = token || Authorization.new(client).fetch_access_token
+      @token = token || UnderarmourApi::Authorization.new(client).fetch_access_token
     # access token needed to authorize a user
+      after_init(options)
       @options = options
       # @token = options[:token] || Authorization.new(client).fetch_access_token
       # after_init
     end
 
-    class << self
+    def user
     end
 
-    def request(method)
-      HTTParty.send(method, url, payload)
+    def user_role
     end
 
-    private
-
-    def url
-      "#{base_url}#{endpoint}"
+    def user_stats
     end
 
-    def base_url
-      'https://api.ua.com/v7.1/'
+    def activity_story
     end
 
-    def endpoint
-      raise 'endpoint required by subclasses'
+    def friendship
     end
 
-    def payload
-      {
-        body: data,
-        headers: headers
-      }
+    def workout
     end
 
-    def data
-      {}
+    def course
     end
 
-    def headers
-      {
-        'content-type' => 'application/x-www-form-urlencoded',
-        'api-key' => client_id,
-        'accept' => 'application/json',
-        'authorization' => "Bearer #{token}",
-      }
+    def data_source
     end
 
-    # def query
-    #   {}
-    # end
 
-    def parse_response(response)
-      JSON.parse(response.body)
+    def social
     end
 
-    # def after_init(args)
-      # hook for subclasses
-    # end
+
+    # 24/7
   end
 end
