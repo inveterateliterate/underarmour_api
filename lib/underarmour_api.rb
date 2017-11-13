@@ -3,7 +3,8 @@ require 'json'
 require 'pry'
 
 require 'underarmour_api/base'
-require 'underarmour_api/authorization'
+require 'underarmour_api/resources/base'
+require 'underarmour_api/resources/authorization'
 require 'underarmour_api/client'
 require 'underarmour_api/config'
 require 'underarmour_api/error'
@@ -12,7 +13,6 @@ require 'underarmour_api/version'
 
 require 'underarmour_api/authorizations/user_authentication'
 require 'underarmour_api/authorizations/client_authorization'
-require 'underarmour_api/resources/base'
 
 %w(profile_photo privacy_policy user user_role user_stats).each { |f| require "underarmour_api/resources/#{f}"}
 

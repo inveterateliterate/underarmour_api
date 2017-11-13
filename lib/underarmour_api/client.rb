@@ -13,8 +13,15 @@ module UnderarmourApi
         @config = nil
         raise Error::InvalidAPIKeys
       else
+        fetch_access_token unless config.access_token
         config.freeze
       end
+    end
+
+    def fetch_access_token
+      # client or user?
+      # config.access_token = UnderarmourApi::Resources::Authorization.new(self).fetch_access_token
+      config.access_token = UnderarmourApi::Authorizations::ClientAuthorization.new(self).fetch_access_token
     end
   end
 end

@@ -1,7 +1,7 @@
 require 'oauth2'
 
 module UnderarmourApi
-  class UserAuthentication < Authorization
+  class UserAuthentication < Resources::Authorization
     attr_reader :host_url, :oauth_client, :client_id
 
     def initialize(client, args={})

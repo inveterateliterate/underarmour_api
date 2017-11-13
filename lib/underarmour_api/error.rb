@@ -33,7 +33,7 @@ module UnderarmourApi
       end
 
       def to_s
-        "#{self.class.to_s} : #{response.code} #{response.body}"
+        "#{self.class}: #{response.code} #{response.body}"
       end
 
       def self.raise_error(response)

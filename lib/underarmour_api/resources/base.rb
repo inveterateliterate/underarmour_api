@@ -6,6 +6,7 @@ module UnderarmourApi
 
       def initialize(client, options={})
         @client_id = client.config.client_id
+        # think about how to make the acces token optional in config
         @token = client.config.access_token || UnderarmourApi::Authorization.new(client).fetch_access_token
         after_init(options)
       end
@@ -13,9 +14,13 @@ module UnderarmourApi
       class << self
       end
 
+      def after_init(args)
+        # hook for subclasses
+      end
+
       def request(method)
         response = HTTParty.send(method, url, payload)
-        (200..202).include?(response.code) ? parsed_response(response) : raise_http_error(response)
+        check_response_status(response)
       end
 
       private
@@ -52,12 +57,12 @@ module UnderarmourApi
         }
       end
 
-      def parsed_response(response)
-        JSON.parse(response.body)
+      def check_response_status(response)
+        (200..202).include?(response.code) ? parsed_response(response) : raise_http_error(response)
       end
 
-      def after_init(args)
-        # hook for subclasses
+      def parsed_response(response)
+        JSON.parse(response.body)
       end
 
       def raise_http_error(response)

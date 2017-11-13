@@ -9,23 +9,22 @@ module UnderarmourApi
 
       def all
         # can be more than one of each size?
-        response = request(:get)
-        parsed_response(response)
+        request(:get)
       end
 
       def small_image
         response = request(:get)
-        parsed_response(response).dig('_links', 'small', 0, 'href')
+        response.dig('_links', 'small', 0, 'href')
       end
 
       def medium_image
         response = request(:get)
-        parsed_response(response).dig('_links', 'medium', 0, 'href')
+        response.dig('_links', 'medium', 0, 'href')
       end
 
       def large_image
         response = request(:get)
-        parsed_response(response).dig('_links', 'large', 0, 'href')
+        response.dig('_links', 'large', 0, 'href')
       end
 
       def endpoint
