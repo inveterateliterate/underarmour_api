@@ -27,17 +27,21 @@ module UnderarmourApi
         500 => 'ServerError'
       }
 
-      def inititalize(response)
+      def initialize(response)
         @response = response
         super(response)
       end
 
       def to_s
-        "#{self.class}: #{response.code} #{response.body}"
+        "#{self.class}: #{response.code} #{error_message}"
+      end
+
+      def error_message
+        JSON.parse(response.body)['_diagnostics']['validation_failures'].first.first
       end
 
       def self.raise_error(response)
-        klass = HTTP_ERROR_CLASSES[response.code].constantize
+        klass = UnderarmourApi::Error.const_get HTTP_ERROR_CLASSES[response.code]
         raise klass.new(response)
       end
     end

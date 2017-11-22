@@ -13,7 +13,12 @@ module UnderarmourApi
       # after_init
     end
 
+    def self.find(id, type)
+     endpoint =
+    end
+
     def user
+      UnderArmourApi::Resources::Base.new(client, )
     end
 
     def user_role

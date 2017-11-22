@@ -1,89 +1,26 @@
 module UnderarmourApi
-  module Resource
+  module Resources
     class User < Resources::Base
       attr_reader :user_num
 
-      def all
-        response = request(:get)
-        parsed_response(response)
+      PUBLIC_ATTRS = %w(date_joined first_name gender last_initial last_login location locality region country time_zone username preferred_language)
+
+      PRIVATE_ATTRS = %w(birthdate email communication newsletter promotions system_messages display_measurement_system last_name location address sharing facebook twitter height weight)
+
+      def initialize(args={})
+        PUBLIC_ATTRS.each do |pa|
+          set_instance_variable(pa, args[pa])
+        end
       end
 
-      def self
-        @user_num = 'self/'
-        response = request(:get)
-        parsed_response(response)
+
+      def after_init(args={})
+        @user_num = args[:user_num]
       end
 
-      def date_joined(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
-      end
-
-      def first_name(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
-      end
-
-      def gender(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
-      end
-
-      def last_initial(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
-      end
-
-      def last_login(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
-      end
-
-      def location(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
-      end
-
-      def locality(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
-      end
-
-      def region(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
-      end
-
-      def country(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
-      end
-
-      def time_zone(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
-      end
-
-      def username(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
-      end
-
-      def preferred_language(user_num)
-        @user_num = user_num
-        response = request(:get)
-        parsed_response(response)
+      def self.find(args={})
+        @user_num = user_num || args[:user_num]
+        User.new request(:get)
       end
 
       def endpoint
@@ -92,4 +29,3 @@ module UnderarmourApi
     end
   end
 end
-
