@@ -7,16 +7,16 @@ module UnderarmourApi
 
       def after_init(args={})
         @photo_size = args[:size].to_s
-        photo_size_error unless SIZES.include? photo_size
         @endpoint = "user_profile_photo/#{args[:id]}"
       end
 
       def all
+        request(:get)['_links']
       end
 
       def image
-        response = request(:get)
-        response.dig('_links', photo_size, 0, 'href')
+        photo_size_error unless SIZES.include? photo_size
+        all.dig(photo_size, 0, 'href')
       end
 
       def photo_size_error

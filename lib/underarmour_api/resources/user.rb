@@ -30,6 +30,18 @@ module UnderarmourApi
       def profile_photo(size)
         UnderarmourApi::Resources::ProfilePhoto.new(client, id: id, size: size).image
       end
+
+      def profile_photos
+        UnderarmourApi::Resources::ProfilePhoto.new(client, id: id).all
+      end
+
+      def workout(workout_id)
+        UnderarmourApi::Workout.find(client, workout_id)
+      end
+
+      def workouts
+        UnderarmourApi::Resources::Base.new(client, endpoint: "workout/?user=#{id}").request(:get)['_embedded']['workouts']
+      end
     end
   end
 end
