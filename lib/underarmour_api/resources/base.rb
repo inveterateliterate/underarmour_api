@@ -7,8 +7,8 @@ module UnderarmourApi
       def initialize(client, options={})
         @client_id = client.config.client_id
         @token = client.config.access_token || UnderarmourApi::Authorization.new(client).fetch_access_token
-        @query = args[:query]
-        @params = args[:params]
+        @query = options[:query]
+        @params = options[:params]
         after_init(options)
       end
 

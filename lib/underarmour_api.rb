@@ -15,7 +15,7 @@ require 'underarmour_api/authorizations/user_authentication'
 require 'underarmour_api/authorizations/client_authorization'
 
 %w(user).each { |f| require "underarmour_api/#{f}"}
-%w(user).each { |f| require "underarmour_api/resources/#{f}"}
+%w(user profile_photo).each { |f| require "underarmour_api/resources/#{f}"}
 
 module UnderarmourApi
   def self.config

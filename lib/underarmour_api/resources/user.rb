@@ -1,6 +1,7 @@
 module UnderarmourApi
   module Resources
     class User < Resources::Base
+      attr_reader :client
 
       PUBLIC_ATTRS = %w(date_joined first_name gender last_initial last_login location locality region country time_zone username preferred_language hobbies)
 
@@ -12,7 +13,8 @@ module UnderarmourApi
 
       ALL_ATTRS = [PUBLIC_ATTRS, PRIVATE_ATTRS].flatten
 
-      def initialize(args={})
+      def initialize(client, args={})
+        @client = client
         ALL_ATTRS.each { |attr| instance_variable_set("@#{attr}", args[attr]) }
       end
 
@@ -23,6 +25,10 @@ module UnderarmourApi
       end
 
       def update(params)
+      end
+
+      def profile_photo(size)
+        UnderarmourApi::Resources::ProfilePhoto.new(client, id: id, size: size).image
       end
     end
   end
