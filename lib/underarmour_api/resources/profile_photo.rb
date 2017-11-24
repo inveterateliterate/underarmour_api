@@ -24,7 +24,7 @@ module UnderarmourApi
       end
 
       def invalid_photo_size
-        'size argument must be one of: ' + SIZES.join(', ')
+        'size argument for user profile photo must be one of: ' + SIZES.join(', ')
       end
     end
   end

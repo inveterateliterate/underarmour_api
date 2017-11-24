@@ -15,7 +15,7 @@ require 'underarmour_api/authorizations/user_authentication'
 require 'underarmour_api/authorizations/client_authorization'
 
 %w(user workout).each { |f| require "underarmour_api/#{f}"}
-%w(user profile_photo workout).each { |f| require "underarmour_api/resources/#{f}"}
+%w(user profile_photo workout user_stats).each { |f| require "underarmour_api/resources/#{f}"}
 
 module UnderarmourApi
   def self.config

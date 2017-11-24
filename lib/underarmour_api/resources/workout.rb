@@ -1,45 +1,22 @@
 module UnderarmourApi
   module Resources
     class Workout < Resources::Base
-      attr_reader :response
+      attr_reader :attrs
 
-      FLAT_ATTRS = %w(start_datetime name updated_datetime created_datetime notes reference_key start_locale_timezone source has_time_series is_verified)
-
-      LINKS_ATTRS = %w(self route activity_type user privacy)
-
-      AGGREGATE_ATTRS = %w(active_time_total distance_total steps_total speed_avg elapsed_time_total metabolic_energy_total)
-
-      ALL_ATTRS = [FLAT_ATTRS, LINKS_ATTRS, AGGREGATE_ATTRS].flatten
-
-      # need to do some nesting magic for the nested attrs for getter and setter
-
-      def initialize(args={})
-        @response = args
-        set_attributes
-      end
-
-      def set_attributes
-        set_flat_attrs
-        set_links_attrs
-        set_aggregate_attrs
-      end
-
-      def set_flat_attrs
-        FLAT_ATTRS.each { |attr| instance_variable_set("@#{attr}", response[attr]) }
-      end
-
-      def set_links_attrs
-        LINKS_ATTRS.each { |attr| instance_variable_set("@#{attr}_id", response.dig(attr, 0, 'id')) }
-      end
-
-      def set_aggregate_attrs
-        AGGREGATE_ATTRS.each { |attr| instance_variable_set("@#{attr}", response.dig('aggregates', attr)) }
-      end
-
-      ALL_ATTRS.each do |val|
-        define_method(val) do
-          instance_variable_get "@#{val}"
+      def after_init(args)
+        @attrs = args[:response].dig('_embedded', 'workouts') || args[:response]
+        attrs.keys.each do |attr|
+          if attrs[attr].respond_to? :key
+            attrs[attr].keys.each do |attr_key|
+              self.class.send(:define_method, attr_key) { attrs[attr][attr_key] }
+            end
+          end
+          self.class.send(:define_method, attr) { attrs[attr] }
         end
+      end
+
+      def id
+        self.self.first['id']
       end
     end
   end

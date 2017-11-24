@@ -1,26 +1,12 @@
 module UnderarmourApi
   module Resources
     class User < Resources::Base
-      attr_reader :client
+      attr_reader :attrs
 
-      PUBLIC_ATTRS = %w(date_joined first_name gender last_initial last_login location locality region country time_zone username preferred_language hobbies)
-
-      PRIVATE_ATTRS = %w(birthdate email communication newsletter promotions system_messages display_measurement_system last_name location address sharing height weight id introduction goal_statement profile_statement)
-
-      # LINKS = %w(stats privacy image documentation user_achievements friendships workouts)
-
-      ASSOCIATED_CLASSES = %w(stats privacy profile_photo documentation user_achievements friendships workouts)
-
-      ALL_ATTRS = [PUBLIC_ATTRS, PRIVATE_ATTRS].flatten
-
-      def initialize(client, args={})
-        @client = client
-        ALL_ATTRS.each { |attr| instance_variable_set("@#{attr}", args[attr]) }
-      end
-
-      ALL_ATTRS.each do |val|
-        define_method(val) do
-          instance_variable_get "@#{val}"
+      def after_init(args)
+        @attrs = args[:response]
+        attrs.keys.each do |attr|
+          self.class.send(:define_method, attr) { attrs[attr] }
         end
       end
 
@@ -39,8 +25,12 @@ module UnderarmourApi
         UnderarmourApi::Workout.find(client, workout_id)
       end
 
-      def workouts
-        UnderarmourApi::Resources::Base.new(client, endpoint: "workout/?user=#{id}").request(:get)['_embedded']['workouts']
+      def workouts(query={})
+        UnderarmourApi::Workout.filter(client, id, query)
+      end
+
+      def stats(period)
+        UnderarmourApi::Resources::UserStats.new(client, user_id: id, aggregate_by_period: period).aggregate
       end
     end
   end

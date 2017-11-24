@@ -3,17 +3,17 @@ module UnderarmourApi
     # wrappers for resources
     attr_reader :client_id, :options, :token
 
-    def initialize(client, options={})
-      @client_id = client.config.client_id
-      @token = client.config.access_token || UnderarmourApi::Authorization.new(client).fetch_access_token
-      @options = options
-    end
-
     def self.find(client, id, type)
       # another way to not have to pass client around?
       response = UnderarmourApi::Resources::Base.new(client, endpoint: "#{type}/#{id}").request(:get)
       klass = UnderarmourApi::Resources.const_get type.capitalize
-      klass.new client, response
+      klass.new client, response: response
+    end
+
+    def self.filter(client, query={}, type, keys)
+      # another way to not have to pass client around?
+      query_string = query.map { |param, q| "#{param}=#{q}&" }.join
+      UnderarmourApi::Resources::Base.new(client, endpoint: "#{type}/?#{query_string}").request(:get).dig(*keys)
     end
   end
 end
