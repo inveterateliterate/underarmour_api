@@ -1,6 +1,6 @@
 module UnderarmourApi
   module Authorizations
-    class ClientAuthorization < Resources::Authorization
+    class ClientAuthentication < Resources::Authorization
 
       def endpoint
         'oauth2/uacf/access_token/'
