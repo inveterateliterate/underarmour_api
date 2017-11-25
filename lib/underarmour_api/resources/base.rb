@@ -35,10 +35,6 @@ module UnderarmourApi
         'https://api.ua.com/v7.1/'
       end
 
-      # def endpoint
-      #   raise 'endpoint required by subclasses'
-      # end
-
       def payload
         {
           body: data,
