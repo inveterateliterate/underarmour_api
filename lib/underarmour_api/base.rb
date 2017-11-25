@@ -1,52 +1,15 @@
 module UnderarmourApi
   class Base
-    # wrappers for resources
-    attr_reader :client_id, :options, :token, :query, :user_num
 
-    def initialize(client, token=nil, options={})
-      @client_id = client.config.client_id
-      @token = token || UnderarmourApi::Authorization.new(client).fetch_access_token
-    # access token needed to authorize a user
-      after_init(options)
-      @options = options
-      # @token = options[:token] || Authorization.new(client).fetch_access_token
-      # after_init
+    def self.find(client, id, type)
+      response = UnderarmourApi::Resources::Base.new(client, endpoint: "#{type}/#{id}").request(:get)
+      klass = UnderarmourApi::Resources.const_get type.capitalize
+      klass.new client, response: response
     end
 
-    def self.find(id, type)
-     endpoint =
+    def self.filter(client, query={}, type, keys)
+      query_string = query.map { |param, q| "#{param}=#{q}&" }.join
+      UnderarmourApi::Resources::Base.new(client, endpoint: "#{type}/?#{query_string}").request(:get).dig(*keys)
     end
-
-    def user
-      UnderArmourApi::Resources::Base.new(client, )
-    end
-
-    def user_role
-    end
-
-    def user_stats
-    end
-
-    def activity_story
-    end
-
-    def friendship
-    end
-
-    def workout
-    end
-
-    def course
-    end
-
-    def data_source
-    end
-
-
-    def social
-    end
-
-
-    # 24/7
   end
 end

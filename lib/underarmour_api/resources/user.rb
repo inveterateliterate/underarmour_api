@@ -1,30 +1,33 @@
 module UnderarmourApi
   module Resources
     class User < Resources::Base
-      attr_reader :user_num
+      attr_reader :attrs
 
-      PUBLIC_ATTRS = %w(date_joined first_name gender last_initial last_login location locality region country time_zone username preferred_language)
-
-      PRIVATE_ATTRS = %w(birthdate email communication newsletter promotions system_messages display_measurement_system last_name location address sharing facebook twitter height weight)
-
-      def initialize(args={})
-        PUBLIC_ATTRS.each do |pa|
-          set_instance_variable(pa, args[pa])
+      def after_init(args)
+        @attrs = args[:response]
+        attrs.keys.each do |attr|
+          self.class.send(:define_method, attr) { attrs[attr] }
         end
       end
 
-
-      def after_init(args={})
-        @user_num = args[:user_num]
+      def profile_photo(size)
+        UnderarmourApi::Resources::ProfilePhoto.new(client, id: id, size: size).image
       end
 
-      def self.find(args={})
-        @user_num = user_num || args[:user_num]
-        User.new request(:get)
+      def profile_photos
+        UnderarmourApi::Resources::ProfilePhoto.new(client, id: id).all
       end
 
-      def endpoint
-        "user/#{user_num}"
+      def workout(workout_id)
+        UnderarmourApi::Workout.find(client, workout_id)
+      end
+
+      def workouts(query={})
+        UnderarmourApi::Workout.filter(client, id, query)
+      end
+
+      def stats(period)
+        UnderarmourApi::Resources::UserStats.new(client, user_id: id, aggregate_by_period: period).aggregate
       end
     end
   end

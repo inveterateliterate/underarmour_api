@@ -1,6 +1,6 @@
 module UnderarmourApi
   class Client
-    attr_reader :config
+    attr_reader :config, :user
 
     # returns a client with id and secret
     def initialize(args={})
@@ -19,9 +19,16 @@ module UnderarmourApi
     end
 
     def fetch_access_token
-      # client or user?
-      # config.access_token = UnderarmourApi::Resources::Authorization.new(self).fetch_access_token
       config.access_token = UnderarmourApi::Authorizations::ClientAuthorization.new(self).fetch_access_token
+    end
+
+    def user
+      # only if user access token passed in
+      @user ||= UnderarmourApi::User.me(self)
+    end
+
+    def workouts
+      user.workouts
     end
   end
 end

@@ -2,18 +2,21 @@ module UnderarmourApi
   # API wrapper
   module Resources
     class Base
-      attr_reader :client_id, :token, :response
+      attr_reader :client, :token, :response, :endpoint
 
       def initialize(client, options={})
-        @client_id = client.config.client_id
+        @client = client
         @token = client.config.access_token || UnderarmourApi::Authorization.new(client).fetch_access_token
+        @query = options[:query]
+        @params = options[:params]
+        @endpoint = options[:endpoint]
         after_init(options)
       end
 
       class << self
       end
 
-      def after_init(args)
+      def after_init(options)
         # hook for subclasses
       end
 
@@ -32,10 +35,6 @@ module UnderarmourApi
         'https://api.ua.com/v7.1/'
       end
 
-      def endpoint
-        raise 'endpoint required by subclasses'
-      end
-
       def payload
         {
           body: data,
@@ -43,17 +42,17 @@ module UnderarmourApi
         }
       end
 
-      def data
+      def data()
         {}
       end
 
-      def headers
+      def headers(args={})
         {
           'content-type' => 'application/x-www-form-urlencoded',
-          'api-key' => client_id,
+          # 'api-key' => client.config.client_id,
           'accept' => 'application/json',
           'authorization' => "Bearer #{token}",
-        }
+        }.merge(args)
       end
 
       def check_response_status(response)

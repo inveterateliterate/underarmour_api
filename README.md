@@ -45,11 +45,11 @@ or
 
 ### Users
 
-You can fetch the authenticated user's data either by calling `client.user`, or passing the client into `UnderarmourApi::User.me(client)`.
+You can fetch the authenticated user's data either by calling `client.user`, or by passing the client into `UnderarmourApi::User.me(client)`.
 
 The authenticated user then has associated resources such as `profile_photos` and `workouts`.
 
-Some of these resources can be further filtered for instance:
+Some of these resources can be further filtered, for instance:
 
 ```ruby
   user = client.user
