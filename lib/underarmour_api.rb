@@ -11,9 +11,6 @@ require 'underarmour_api/error'
 require 'underarmour_api/version'
 # require 'underarmour_api/railtie' if defined?(::Rails)
 
-require 'underarmour_api/authorizations/user_authentication'
-require 'underarmour_api/authorizations/client_authorization'
-
 %w(user workout).each { |f| require "underarmour_api/#{f}"}
 %w(user profile_photo workout user_stats).each { |f| require "underarmour_api/resources/#{f}"}
 
