@@ -2,9 +2,7 @@
 
 _note: new project, not yet published to ruby gems_
 
-Ruby gem to utilize UnderArmour API
-
-Includes the authorization flow, as well as simple methods to query and retrieve specific data for an authenticated user.
+Ruby gem to utilize UnderArmour API, with simple methods to query and retrieve specific data for an authenticated user.
 
 ## Installation
 
@@ -26,30 +24,51 @@ Or install it yourself as:
 
 ### Authentication
 
-Request a `client_id` and `client_secret` for the Underarmour Api from their [developer site](https://developer.underarmour.com/docs/) under "Request a Key".
-Once you store those values in a safe place, you can pass them through to the gem either in the config file, or by instantiating a client with those values manually:
+Request a `client_id` and `client_secret` for the UnderArmour API from their [developer site](https://developer.underarmour.com/docs/) under "Request a Key".
+Once you store those values in a safe place, you can pass them through to the gem either in an initializer file, or by instantiating a client with those values manually:
 
 **app/config/initializers/underaroumour_api.rb**
 ```ruby
-  UnderarmourApi.config do |config|
-    config.client_id = ENV['UA_CLIENT_ID']
-    config.client_secret = ENV['UA_CLIENT_SECRET']
-  end
+UnderarmourApi.config do |config|
+  config.client_id = ENV['UA_CLIENT_ID']
+  config.client_secret = ENV['UA_CLIENT_SECRET']
+end
 ```
 
 or
 
 `client = UnderarmourApi::Client.new(client_id: ENV['UA_CLIENT_ID'], client_secret: ENV['UA_CLIENT_SECRET'])`
 
-[TODO: fetching the user's access token and passing that through]
+Creating a client will then also set a client access code, to retrieve app-level data from the API. You can also add the access token directly in the initializer as well.
 
-### Users
+To retrieve a user access token, you will need to go through [UnderArmour's OAuth flow](https://developer.underarmour.com/docs/v71_OAuth_2/) to have the user authorize access to their data.
+This process will require you to send your users via a link to UnderArmour's login page that will include a redirect uri and a `request_type` of 'code':
+
+`https://www.mapmyfitness.com/v7.1/oauth2/authorize/?client_id=ENV[CLIENT_ID]&response_type=code&redirect_uri=REDIRECT_URI`
+
+where your `REDIRECT_URI` might look like: `https://myapp.com/callback`
+
+If the user login is successful, your app should capture the response the API will send with the redirect, which will include a code value in the params:
+
+```ruby
+def callback
+  @code = params[:code]
+end
+```
+
+You can then pass this code on to the client to fetch the authenticated user's access token like so:
+
+`client.fetch_access_token(code: params[:code])`
+
+### Resources
+
+#### Users
 
 You can fetch the authenticated user's data either by calling `client.user`, or by passing the client into `UnderarmourApi::User.me(client)`.
 
 The authenticated user then has associated resources such as `profile_photos` and `workouts`.
 
-Some of these resources can be further filtered, for instance:
+Some of these resources can be filtered, for instance:
 
 ```ruby
   user = client.user
@@ -58,6 +77,8 @@ Some of these resources can be further filtered, for instance:
   start_date = (DateTime.new(2017, 5, 21, 0, 0, 0)).iso8601
   user.workouts(started_after: start_date, order_by: start_datetime) # >> returns workouts that match the filter criteria
 ```
+
+Check out the [developer docs](https://developer.underarmour.com/docs/) for available parameters for filtering resources such as workouts.
 
 ## Development
 
