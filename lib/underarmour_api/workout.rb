@@ -1,9 +1,6 @@
 module UnderarmourApi
   class Workout < Base
 
-
-
-
     def self.find(client, id)
       super(client, id, 'workout')
     end

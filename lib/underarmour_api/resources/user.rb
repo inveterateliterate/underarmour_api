@@ -10,9 +10,6 @@ module UnderarmourApi
         end
       end
 
-      def update(params)
-      end
-
       def profile_photo(size)
         UnderarmourApi::Resources::ProfilePhoto.new(client, id: id, size: size).image
       end
