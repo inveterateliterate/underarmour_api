@@ -2,14 +2,14 @@ module UnderarmourApi
   class Client
     attr_reader :config, :user
 
-    # returns a client with id and secret
+    # returns a client with id and secret. If passed on, access token is added to the client otherwise it will be fetched
     def initialize(args={})
       configure(args)
     end
 
     def configure(args={})
-      @config = args.nil? ? yield(Config.new) : Config.new(args)
-      if config.nil? || !config.valid_key_names?(args.keys) # can pass in no access token to get base token
+      @config = args.empty? ? UnderarmourApi.config : Config.new(args)
+      if config.nil? || !config.valid_key_names?(args.keys)
         @config = nil
         raise Error::InvalidAPIKeys
       else
@@ -20,15 +20,17 @@ module UnderarmourApi
 
     def fetch_access_token(args)
       config.access_token = UnderarmourApi::Resources::Authorization.new(self, args).fetch_access_token
+      self
+    end
+
+    def set_access_token(args)
+      config.access_token = args[:access_token]
+      self
     end
 
     def user
       # only if user access token passed in
       @user ||= UnderarmourApi::User.me(self)
-    end
-
-    def workouts
-      user.workouts
     end
   end
 end

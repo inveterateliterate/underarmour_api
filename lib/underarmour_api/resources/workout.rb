@@ -4,6 +4,7 @@ module UnderarmourApi
       attr_reader :attrs
 
       def after_init(args)
+        # get away from having to pass client? can pass second args as something else
         @attrs = args[:response].dig('_embedded', 'workouts') || args[:response]
         attrs.keys.each do |attr|
           if attrs[attr].respond_to? :key
